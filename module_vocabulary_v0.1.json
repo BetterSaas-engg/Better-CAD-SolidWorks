@@ -1,0 +1,127 @@
+{
+  "vocabulary_version": "0.1",
+  "synthetic": true,
+  "note": "Draft vocabulary for solvent recovery equipment. Codes, aliases and descriptions are illustrative, not taken from any real company's BOMs.",
+  "categories": {
+    "vessel": "Tanks and columns that hold or boil the solvent",
+    "heat_transfer": "Equipment that adds or removes heat",
+    "vacuum": "Equipment that lowers pressure so solvents boil at lower temperatures",
+    "residue": "Equipment that removes what is left after boiling",
+    "controls": "Electrical panels, PLCs and operator screens",
+    "safety": "Equipment that makes the unit safe in flammable areas"
+  },
+  "modules": [
+    {
+      "code": "STILL-200",
+      "family": "STILL",
+      "category": "vessel",
+      "name": "Batch still, 200 L",
+      "description": "Heated vessel that boils dirty solvent. The vapour leaves for the condenser and the contaminants stay behind as residue.",
+      "aliases": ["still 200l", "200 l still", "batch still 200", "distillation vessel 200l"]
+    },
+    {
+      "code": "STILL-400",
+      "family": "STILL",
+      "category": "vessel",
+      "name": "Batch still, 400 L",
+      "description": "Larger version of the batch still, for higher waste volumes per batch.",
+      "aliases": ["still 400l", "400 l still", "batch still 400", "distillation vessel 400l"]
+    },
+    {
+      "code": "FRAC-COL",
+      "family": "FRAC-COL",
+      "category": "vessel",
+      "name": "Fractionation column",
+      "description": "Tall column that separates a solvent mixture by boiling point. Used when very high purity is needed, for example battery-grade NMP.",
+      "aliases": ["fractionation column", "distillation column", "packed column", "frac column"]
+    },
+    {
+      "code": "REBOILER",
+      "family": "REBOILER",
+      "category": "heat_transfer",
+      "name": "Reboiler",
+      "description": "Heat exchanger at the bottom of a column that keeps the liquid boiling in continuous systems.",
+      "aliases": ["reboiler", "column reboiler", "bottoms heater"]
+    },
+    {
+      "code": "FEED-TANK",
+      "family": "FEED-TANK",
+      "category": "vessel",
+      "name": "Feed tank",
+      "description": "Holding tank that supplies waste solvent to a continuous system at a steady rate.",
+      "aliases": ["feed tank", "surge tank", "buffer tank", "dirty solvent tank"]
+    },
+    {
+      "code": "COND-SHELL",
+      "family": "COND-SHELL",
+      "category": "heat_transfer",
+      "name": "Shell-and-tube condenser",
+      "description": "Cools the solvent vapour back into clean liquid. Cooling water or chiller fluid flows on the other side of the tubes.",
+      "aliases": ["condenser", "cond s&t", "shell and tube condenser", "condenser assy", "vapour condenser"]
+    },
+    {
+      "code": "CHILLER-XP",
+      "family": "CHILLER",
+      "category": "heat_transfer",
+      "name": "Explosion-proof chiller",
+      "description": "Refrigeration unit that supplies cold fluid to the condenser when the site has no cooling water. Usually bought in, not designed.",
+      "aliases": ["chiller", "xp chiller", "explosion proof chiller", "recirculating chiller"]
+    },
+    {
+      "code": "VAC-LR",
+      "family": "VAC",
+      "category": "vacuum",
+      "name": "Liquid ring vacuum pump",
+      "description": "Lowers the pressure inside the still so solvents boil at a lower temperature. Needed for high-boiling solvents and heat-sensitive ones.",
+      "aliases": ["vacuum pump", "liquid ring pump", "lr vac pump", "vac pump"]
+    },
+    {
+      "code": "SLUDGE-PUMP",
+      "family": "SLUDGE-PUMP",
+      "category": "residue",
+      "name": "Sludge discharge pump",
+      "description": "Pumps thick residue out of the still automatically, instead of an operator removing a bag liner by hand.",
+      "aliases": ["sludge pump", "residue pump", "bottoms discharge pump", "sludge discharge"]
+    },
+    {
+      "code": "PLC-PANEL-STD",
+      "family": "PLC-PANEL",
+      "category": "controls",
+      "name": "Standard control panel",
+      "description": "Electrical panel with a small PLC and touchscreen, for units in general-purpose or Div 2 areas.",
+      "aliases": ["control panel", "plc panel", "electrical panel", "main panel"]
+    },
+    {
+      "code": "PLC-PANEL-XP",
+      "family": "PLC-PANEL",
+      "category": "controls",
+      "name": "Control panel for hazardous areas",
+      "description": "Control panel built and certified for a flammable (Class I Div 1) area, usually paired with a purge enclosure.",
+      "aliases": ["xp panel", "explosion proof panel", "hazloc panel", "div 1 panel"]
+    },
+    {
+      "code": "PLC-PANEL-LARGE",
+      "family": "PLC-PANEL",
+      "category": "controls",
+      "name": "Large control panel",
+      "description": "Larger PLC system for continuous plants with many sensors, valves and control loops.",
+      "aliases": ["large plc panel", "process control panel", "mcc panel"]
+    },
+    {
+      "code": "HMI-REMOTE",
+      "family": "HMI",
+      "category": "controls",
+      "name": "Remote operator screen",
+      "description": "Operator touchscreen mounted away from the machine, for example in a control room.",
+      "aliases": ["remote hmi", "control room hmi", "remote operator station"]
+    },
+    {
+      "code": "XP-PURGE",
+      "family": "XP-PURGE",
+      "category": "safety",
+      "name": "Purge enclosure system",
+      "description": "Keeps the electrical enclosure filled with clean air or gas at a slight positive pressure, so flammable vapour cannot get in. A common way to put electronics in a Div 1 area.",
+      "aliases": ["purge system", "purged enclosure", "z purge", "x purge", "pressurization system"]
+    }
+  ]
+}

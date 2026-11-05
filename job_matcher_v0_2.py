@@ -1,13 +1,18 @@
-"""ETO job matcher v0.1
+"""ETO job matcher v0.2
 
 Given a new enquiry (customer requirements), rank past job cards by how
 similar their requirements are, and show what those jobs actually cost.
+
+v0.2 adds the price reference: the most similar job is not always the best
+guide to cost. If a job included first-time design work that later jobs
+reused, its engineering cost is inflated for today's purposes. The matcher
+flags that and picks a better reference.
 
 Deterministic on purpose: every score is explainable. An LLM can explain
 the result later; it does not decide the ranking.
 
 Usage:
-    python job_matcher_v0_1.py enquiry_example_v0_1.json eto_job_cards_synthetic_v0.1.json
+    python job_matcher_v0_2.py enquiry_example_v0_1.json eto_job_cards_synthetic_v0.1.json
 """
 import json
 import re
@@ -26,6 +31,9 @@ WEIGHTS = {
 assert abs(sum(WEIGHTS.values()) - 1.0) < 1e-9, "weights must sum to 1"
 
 # Hazardous-area ratings ordered by severity, so near ratings score partially.
+# A past job must match at least this well to be used as a price reference.
+MIN_REFERENCE_SCORE = 0.6
+
 HAZARD_LEVEL = {"none": 0, "class1_div2": 1, "atex_zone2": 1, "class1_div1": 2, "atex_zone1": 2}
 
 
@@ -114,11 +122,49 @@ def rank(enquiry, cards, top=3):
     return scored[:top]
 
 
+def design_reuse(cards):
+    """For each job, which of its first-time designs were reused on later jobs.
+
+    Returns {job_id: {module_code: [later job_ids]}}. Jobs without a quote date
+    are skipped, because "later" can't be decided for them.
+    """
+    dated = [c for c in cards if c["commercials"].get("quote_date")]
+    reuse = {}
+    for job in dated:
+        job_date = job["commercials"]["quote_date"]
+        new_codes = {m["code"] for m in job["solution"]["modules"] if m["new_design"]}
+        found = {}
+        for code in sorted(new_codes):
+            later = [
+                c["job_id"] for c in dated
+                if c["commercials"]["quote_date"] > job_date
+                and any(m["code"] == code and not m["new_design"] for m in c["solution"]["modules"])
+            ]
+            if later:
+                found[code] = later
+        reuse[job["job_id"]] = found
+    return reuse
+
+
+def price_reference(ranked, reuse):
+    """Best job to price from: a strong match, with an actual cost, whose
+    engineering wasn't inflated by designs that now already exist.
+    Returns the card, or None if no match is strong enough."""
+    for (total, _), card in ranked:
+        if total < MIN_REFERENCE_SCORE or not card["commercials"].get("actual_cost"):
+            continue
+        if not reuse.get(card["job_id"]):
+            return card
+    return None
+
+
 def main(enquiry_path, cards_path):
     enquiry = json.load(open(enquiry_path, encoding="utf-8"))
     cards = json.load(open(cards_path, encoding="utf-8"))
     print(f"Enquiry: {enquiry['summary']}\n")
-    for i, ((total, parts), card) in enumerate(rank(enquiry, cards), 1):
+    ranked = rank(enquiry, cards)
+    reuse = design_reuse(cards)
+    for i, ((total, parts), card) in enumerate(ranked, 1):
         print(f"{i}. {card['job_id']}  {card['customer']['name']}  match {total:.0%}")
         strong = [k for k, v in parts.items() if v >= 0.8]
         weak = [k for k, v in parts.items() if v < 0.5]
@@ -127,7 +173,15 @@ def main(enquiry_path, cards_path):
         new_mods = [m["code"] for m in card["solution"]["modules"] if m["new_design"]]
         if new_mods:
             print(f"   New design on that job: {', '.join(new_mods)}")
+        for code, later in reuse.get(card["job_id"], {}).items():
+            print(f"   ! {code} has since been reused on {', '.join(later)}: this job's engineering cost is high for today")
         print(f"   Lesson: {card.get('lessons', '-')}\n")
+
+    ref = price_reference(ranked, reuse)
+    if ref:
+        print(f"Best price reference: {ref['job_id']} ({ref['customer']['name']}), {cost_summary(ref)}")
+    else:
+        print("Best price reference: none. No past job is close enough; treat this as a new design.")
 
 
 if __name__ == "__main__":

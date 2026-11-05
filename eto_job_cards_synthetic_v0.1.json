@@ -1,0 +1,257 @@
+[
+  {
+    "schema_version": "0.1",
+    "job_id": "SYN-2021-031",
+    "status": "delivered",
+    "synthetic": true,
+    "customer": { "name": "Northline Flexo Printing", "industry": "printing", "country": "CA" },
+    "requirements": {
+      "solvents": [
+        { "name": "n-propyl acetate", "share_pct": 60, "boiling_point_c": 102 },
+        { "name": "ethanol", "share_pct": 40, "boiling_point_c": 78 }
+      ],
+      "contaminants": "flexo inks, pigments",
+      "mode": "batch",
+      "throughput": { "value": 200, "unit": "litres_per_batch" },
+      "target_purity_pct": 95,
+      "water_separation": false,
+      "hazardous_area": "class1_div2",
+      "power_supply": "600V/3ph/60Hz",
+      "site_constraints": "Indoor, 3 m ceiling, cooling water available",
+      "certifications": ["CSA"]
+    },
+    "solution": {
+      "base_product": "Standard batch still, 200 L",
+      "custom_level": "configured",
+      "heating": "thermal_oil",
+      "vacuum": false,
+      "cooling": "water",
+      "wetted_material": "304_ss",
+      "controls": "Allen-Bradley Micro850 + 7in HMI",
+      "residue_handling": "Disposable bag liner",
+      "modules": [
+        { "code": "STILL-200", "qty": 1, "new_design": false },
+        { "code": "COND-SHELL", "qty": 1, "new_design": false },
+        { "code": "PLC-PANEL-STD", "qty": 1, "new_design": false }
+      ],
+      "top_assembly_ref": "SYN-ASM-200-031"
+    },
+    "commercials": {
+      "currency": "CAD",
+      "quote_date": "2021-03-15",
+      "quoted_price": 68000,
+      "quoted_lead_time_weeks": 10,
+      "estimated_cost": { "materials": 28000, "labour": 12000, "engineering": 3000, "subcontract": 2000, "total": 45000 },
+      "actual_cost": { "materials": 29500, "labour": 13200, "engineering": 3400, "subcontract": 2000, "total": 48100 },
+      "change_orders_value": 0,
+      "actual_lead_time_weeks": 11
+    },
+    "lessons": "Clean job. Standard unit, options only.",
+    "provenance": { "sources": ["synthetic"], "completeness": "full", "carded_by": "Claude", "carded_on": "2026-11-04" }
+  },
+  {
+    "schema_version": "0.1",
+    "job_id": "SYN-2022-114",
+    "status": "delivered",
+    "synthetic": true,
+    "customer": { "name": "Cascade Coatings", "industry": "coatings", "country": "US" },
+    "requirements": {
+      "solvents": [
+        { "name": "toluene", "share_pct": 70, "boiling_point_c": 111 },
+        { "name": "xylene", "share_pct": 30, "boiling_point_c": 139 }
+      ],
+      "contaminants": "resins, pigments, heavy sludge",
+      "mode": "batch",
+      "throughput": { "value": 400, "unit": "litres_per_batch" },
+      "target_purity_pct": 97,
+      "water_separation": false,
+      "hazardous_area": "class1_div1",
+      "power_supply": "480V/3ph/60Hz",
+      "site_constraints": "Indoor, tight footprint, existing cooling tower",
+      "certifications": ["UL"]
+    },
+    "solution": {
+      "base_product": "Standard batch still, 400 L",
+      "custom_level": "modified",
+      "heating": "thermal_oil",
+      "vacuum": true,
+      "cooling": "water",
+      "wetted_material": "316_ss",
+      "controls": "Allen-Bradley CompactLogix + PanelView",
+      "residue_handling": "Automatic sludge discharge pump",
+      "modules": [
+        { "code": "STILL-400", "qty": 1, "new_design": false },
+        { "code": "COND-SHELL", "qty": 1, "new_design": false },
+        { "code": "VAC-LR", "qty": 1, "new_design": false },
+        { "code": "SLUDGE-PUMP", "qty": 1, "new_design": true, "notes": "First sludge discharge design for heavy residue" },
+        { "code": "XP-PURGE", "qty": 1, "new_design": true, "notes": "Purged enclosure for Div 1" },
+        { "code": "PLC-PANEL-XP", "qty": 1, "new_design": false }
+      ],
+      "top_assembly_ref": "SYN-ASM-400-114"
+    },
+    "commercials": {
+      "currency": "USD",
+      "quote_date": "2022-06-02",
+      "quoted_price": 165000,
+      "quoted_lead_time_weeks": 16,
+      "estimated_cost": { "materials": 70000, "labour": 30000, "engineering": 12000, "subcontract": 8000, "total": 120000 },
+      "actual_cost": { "materials": 74500, "labour": 34800, "engineering": 21600, "subcontract": 8900, "total": 139800 },
+      "change_orders_value": 6500,
+      "actual_lead_time_weeks": 21
+    },
+    "lessons": "Sludge discharge pump took nearly twice the estimated engineering. Div 1 purge added 3 weeks. Price engineering higher next time on heavy-residue jobs.",
+    "provenance": { "sources": ["synthetic"], "completeness": "full", "carded_by": "Claude", "carded_on": "2026-11-04" }
+  },
+  {
+    "schema_version": "0.1",
+    "job_id": "SYN-2023-207",
+    "status": "delivered",
+    "synthetic": true,
+    "customer": { "name": "Greybrook Industrial Finishes", "industry": "coatings", "country": "CA" },
+    "requirements": {
+      "solvents": [
+        { "name": "toluene", "share_pct": 50, "boiling_point_c": 111 },
+        { "name": "xylene", "share_pct": 30, "boiling_point_c": 139 },
+        { "name": "MEK", "share_pct": 20, "boiling_point_c": 80 }
+      ],
+      "contaminants": "resins, pigments, heavy sludge",
+      "mode": "batch",
+      "throughput": { "value": 400, "unit": "litres_per_batch" },
+      "target_purity_pct": 97,
+      "water_separation": false,
+      "hazardous_area": "class1_div1",
+      "power_supply": "600V/3ph/60Hz",
+      "site_constraints": "Indoor, chiller required (no cooling water)",
+      "certifications": ["CSA"]
+    },
+    "solution": {
+      "base_product": "Standard batch still, 400 L",
+      "custom_level": "modified",
+      "heating": "thermal_oil",
+      "vacuum": true,
+      "cooling": "chiller",
+      "wetted_material": "316_ss",
+      "controls": "Allen-Bradley CompactLogix + PanelView",
+      "residue_handling": "Automatic sludge discharge pump",
+      "modules": [
+        { "code": "STILL-400", "qty": 1, "new_design": false },
+        { "code": "COND-SHELL", "qty": 1, "new_design": false },
+        { "code": "VAC-LR", "qty": 1, "new_design": false },
+        { "code": "SLUDGE-PUMP", "qty": 1, "new_design": false, "notes": "Reused design from SYN-2022-114" },
+        { "code": "XP-PURGE", "qty": 1, "new_design": false },
+        { "code": "CHILLER-XP", "qty": 1, "new_design": false, "notes": "Bought-in" },
+        { "code": "PLC-PANEL-XP", "qty": 1, "new_design": false }
+      ],
+      "top_assembly_ref": "SYN-ASM-400-207"
+    },
+    "commercials": {
+      "currency": "CAD",
+      "quote_date": "2023-09-11",
+      "quoted_price": 182000,
+      "quoted_lead_time_weeks": 18,
+      "estimated_cost": { "materials": 79000, "labour": 33000, "engineering": 18000, "subcontract": 9000, "total": 139000 },
+      "actual_cost": { "materials": 81200, "labour": 34100, "engineering": 17300, "subcontract": 9400, "total": 142000 },
+      "change_orders_value": 0,
+      "actual_lead_time_weeks": 18
+    },
+    "lessons": "Reusing the 2022 sludge pump design kept engineering on budget. Lead time held.",
+    "provenance": { "sources": ["synthetic"], "completeness": "full", "carded_by": "Claude", "carded_on": "2026-11-04" }
+  },
+  {
+    "schema_version": "0.1",
+    "job_id": "SYN-2024-052",
+    "status": "delivered",
+    "synthetic": true,
+    "customer": { "name": "Voltera Cell Systems", "industry": "battery", "country": "US" },
+    "requirements": {
+      "solvents": [ { "name": "NMP", "share_pct": 100, "boiling_point_c": 202 } ],
+      "contaminants": "water, trace binder",
+      "mode": "continuous",
+      "throughput": { "value": 500, "unit": "litres_per_hour" },
+      "target_purity_pct": 99.9,
+      "water_separation": true,
+      "hazardous_area": "none",
+      "power_supply": "480V/3ph/60Hz",
+      "site_constraints": "Outdoor skid next to coating line, 8 m height limit",
+      "certifications": ["UL", "ASME"]
+    },
+    "solution": {
+      "base_product": "none",
+      "custom_level": "engineered",
+      "heating": "steam",
+      "vacuum": true,
+      "cooling": "water",
+      "wetted_material": "316_ss",
+      "controls": "Allen-Bradley ControlLogix + remote HMI",
+      "residue_handling": "Continuous bottoms draw to drum",
+      "modules": [
+        { "code": "FRAC-COL", "qty": 1, "new_design": true },
+        { "code": "REBOILER", "qty": 1, "new_design": true },
+        { "code": "COND-SHELL", "qty": 2, "new_design": false },
+        { "code": "VAC-LR", "qty": 1, "new_design": false },
+        { "code": "FEED-TANK", "qty": 2, "new_design": false },
+        { "code": "PLC-PANEL-LARGE", "qty": 1, "new_design": true },
+        { "code": "HMI-REMOTE", "qty": 1, "new_design": true }
+      ],
+      "top_assembly_ref": "SYN-ASM-FC-052"
+    },
+    "commercials": {
+      "currency": "USD",
+      "quote_date": "2024-02-20",
+      "quoted_price": 1250000,
+      "quoted_lead_time_weeks": 32,
+      "estimated_cost": { "materials": 520000, "labour": 210000, "engineering": 140000, "subcontract": 90000, "total": 960000 },
+      "actual_cost": { "materials": 588000, "labour": 246000, "engineering": 212000, "subcontract": 104000, "total": 1150000 },
+      "change_orders_value": 40000,
+      "actual_lead_time_weeks": 41
+    },
+    "lessons": "Hitting 99.9% purity took three rounds of column changes. Engineering overran by about half. First job of this kind.",
+    "provenance": { "sources": ["synthetic"], "completeness": "full", "carded_by": "Claude", "carded_on": "2026-11-04" }
+  },
+  {
+    "schema_version": "0.1",
+    "job_id": "SYN-2025-019",
+    "status": "quoted_lost",
+    "synthetic": true,
+    "customer": { "name": "Meridian Aerospace Coatings", "industry": "aerospace", "country": "CA" },
+    "requirements": {
+      "solvents": [
+        { "name": "MEK", "share_pct": 60, "boiling_point_c": 80 },
+        { "name": "acetone", "share_pct": 40, "boiling_point_c": 56 }
+      ],
+      "contaminants": "primer, paint residue",
+      "mode": "batch",
+      "throughput": { "value": 200, "unit": "litres_per_batch" },
+      "target_purity_pct": 95,
+      "water_separation": false,
+      "hazardous_area": "class1_div1",
+      "power_supply": "600V/3ph/60Hz",
+      "certifications": ["CSA"]
+    },
+    "solution": {
+      "base_product": "Standard batch still, 200 L",
+      "custom_level": "configured",
+      "heating": "thermal_oil",
+      "vacuum": false,
+      "cooling": "water",
+      "wetted_material": "304_ss",
+      "controls": "Allen-Bradley Micro850 + 7in HMI",
+      "residue_handling": "Disposable bag liner",
+      "modules": [
+        { "code": "STILL-200", "qty": 1, "new_design": false },
+        { "code": "COND-SHELL", "qty": 1, "new_design": false },
+        { "code": "XP-PURGE", "qty": 1, "new_design": false },
+        { "code": "PLC-PANEL-XP", "qty": 1, "new_design": false }
+      ]
+    },
+    "commercials": {
+      "currency": "CAD",
+      "quote_date": "2025-01-28",
+      "quoted_price": 74000,
+      "quoted_lead_time_weeks": 12,
+      "estimated_cost": { "total": 53000 }
+    },
+    "lessons": "Lost. Customer said a competitor came in about 15% lower.",
+    "provenance": { "sources": ["synthetic"], "completeness": "quote_only", "carded_by": "Claude", "carded_on": "2026-11-04" }
+  }
+]

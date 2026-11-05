@@ -1,0 +1,15 @@
+{
+  "summary": "Coatings plant, toluene and xylene with heavy sludge, about 350 L per batch, Class I Div 1",
+  "industry": "coatings",
+  "requirements": {
+    "solvents": [
+      { "name": "toluene", "share_pct": 65 },
+      { "name": "xylene", "share_pct": 35 }
+    ],
+    "contaminants": "resins, heavy sludge",
+    "mode": "batch",
+    "throughput": { "value": 350, "unit": "litres_per_batch" },
+    "target_purity_pct": 97,
+    "hazardous_area": "class1_div1"
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "eto-job-card/v0.1",
+  "title": "ETO Job Card",
+  "description": "One completed engineered-to-order job: what the customer needed, what was built, what was quoted, and what it actually cost. v0.1 draft, built on synthetic examples only.",
+  "type": "object",
+  "required": ["schema_version", "job_id", "status", "customer", "requirements", "solution", "commercials", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "0.1" },
+    "job_id": { "type": "string", "description": "The job or PO number that links the quote, the ERP job and the final costs." },
+    "status": { "enum": ["quoted_lost", "won_in_progress", "delivered", "cancelled"] },
+    "synthetic": { "type": "boolean", "description": "True for made-up test data. Never mix synthetic and real cards in the same match results." },
+
+    "customer": {
+      "type": "object",
+      "required": ["name", "industry", "country"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "industry": { "enum": ["printing", "coatings", "automotive", "aerospace", "battery", "semiconductor", "pharma", "cannabis_hemp", "chemicals", "other"] },
+        "country": { "type": "string", "description": "ISO 3166 two-letter code." }
+      }
+    },
+
+    "requirements": {
+      "description": "What the customer asked for. This is what a new enquiry gets compared against.",
+      "type": "object",
+      "required": ["solvents", "mode", "throughput", "hazardous_area"],
+      "additionalProperties": false,
+      "properties": {
+        "solvents": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string", "description": "Common name, e.g. acetone, IPA, NMP, toluene." },
+              "share_pct": { "type": "number", "minimum": 0, "maximum": 100 },
+              "boiling_point_c": { "type": "number" }
+            }
+          }
+        },
+        "contaminants": { "type": "string", "description": "What is dissolved in the waste: inks, resins, pigments, water, binder." },
+        "mode": { "enum": ["batch", "continuous"] },
+        "throughput": {
+          "type": "object",
+          "required": ["value", "unit"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "number", "exclusiveMinimum": 0 },
+            "unit": { "enum": ["litres_per_batch", "litres_per_hour", "litres_per_day"] }
+          }
+        },
+        "target_purity_pct": { "type": "number", "minimum": 0, "maximum": 100 },
+        "water_separation": { "type": "boolean" },
+        "hazardous_area": { "enum": ["none", "class1_div2", "class1_div1", "atex_zone2", "atex_zone1"] },
+        "power_supply": { "type": "string", "description": "e.g. 600V/3ph/60Hz." },
+        "site_constraints": { "type": "string", "description": "Footprint, ceiling height, indoor/outdoor, utilities available." },
+        "certifications": { "type": "array", "items": { "enum": ["CSA", "UL", "CE", "ATEX", "ASME", "CRN"] } }
+      }
+    },
+
+    "solution": {
+      "description": "What was actually built. The modules list is what makes two jobs structurally similar.",
+      "type": "object",
+      "required": ["base_product", "custom_level", "modules"],
+      "additionalProperties": false,
+      "properties": {
+        "base_product": { "type": "string", "description": "Standard product it started from, or 'none' for a clean-sheet design." },
+        "custom_level": { "enum": ["standard", "configured", "modified", "engineered"], "description": "standard = catalogue unit; configured = standard options only; modified = standard unit plus new parts; engineered = new design." },
+        "heating": { "enum": ["electric", "thermal_oil", "steam", "hot_water"] },
+        "vacuum": { "type": "boolean" },
+        "cooling": { "enum": ["water", "chiller", "air"] },
+        "wetted_material": { "enum": ["304_ss", "316_ss", "carbon_steel", "other"] },
+        "controls": { "type": "string", "description": "PLC and HMI platform, e.g. Allen-Bradley CompactLogix + PanelView." },
+        "residue_handling": { "type": "string", "description": "Bag liner, sludge discharge pump, scraper, drum." },
+        "modules": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["code", "qty", "new_design"],
+            "additionalProperties": false,
+            "properties": {
+              "code": { "type": "string", "description": "Shared module vocabulary, e.g. STILL-200, COND-SHELL, VAC-LR, PLC-PANEL." },
+              "qty": { "type": "integer", "minimum": 1 },
+              "new_design": { "type": "boolean", "description": "True if this module was designed fresh for this job." },
+              "notes": { "type": "string" }
+            }
+          }
+        },
+        "top_assembly_ref": { "type": "string", "description": "SolidWorks top-level assembly file or part number." }
+      }
+    },
+
+    "commercials": {
+      "description": "Quoted versus actual. Every amount comes from the source systems, never calculated by AI.",
+      "type": "object",
+      "required": ["currency", "quoted_price"],
+      "additionalProperties": false,
+      "properties": {
+        "currency": { "enum": ["CAD", "USD", "EUR"] },
+        "quote_date": { "type": "string", "format": "date" },
+        "quoted_price": { "type": "number", "minimum": 0 },
+        "quoted_lead_time_weeks": { "type": "number", "minimum": 0 },
+        "estimated_cost": { "$ref": "#/$defs/cost_breakdown" },
+        "actual_cost": { "$ref": "#/$defs/cost_breakdown" },
+        "change_orders_value": { "type": "number", "description": "Extra billed to the customer after the original quote." },
+        "actual_lead_time_weeks": { "type": "number", "minimum": 0 }
+      }
+    },
+
+    "lessons": { "type": "string", "description": "Free text from the engineer or PM: what went wrong or right. Often the most valuable field." },
+
+    "provenance": {
+      "type": "object",
+      "required": ["sources", "completeness"],
+      "additionalProperties": false,
+      "properties": {
+        "sources": { "type": "array", "items": { "type": "string" }, "description": "Where each part came from: quote file, SolidWorks assembly, Total ETO job, QuickBooks." },
+        "completeness": { "enum": ["full", "partial", "quote_only"] },
+        "carded_by": { "type": "string" },
+        "carded_on": { "type": "string", "format": "date" }
+      }
+    }
+  },
+
+  "$defs": {
+    "cost_breakdown": {
+      "type": "object",
+      "required": ["total"],
+      "additionalProperties": false,
+      "properties": {
+        "materials": { "type": "number", "minimum": 0 },
+        "labour": { "type": "number", "minimum": 0 },
+        "engineering": { "type": "number", "minimum": 0 },
+        "subcontract": { "type": "number", "minimum": 0 },
+        "total": { "type": "number", "minimum": 0 }
+      }
+    }
+  }
+}
